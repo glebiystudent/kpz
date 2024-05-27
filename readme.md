@@ -48,3 +48,35 @@ So what the name implies is that you split the concerns, what that means that yo
 Premature optimization is the root of all evil in programming. –Donald Knuth
 Never optimize your code as soon as you start writing it, obviously, some kind of optimization(just a little bit!) while you are writing it may be good, but trying your best to make your code the best will actually do more harm than good, optimize it at the end, when everything's done, because you might be optimizing something that will ruin at the end and you'll have to do twice as much work as you needed to without this principle
 
+## Refactoring Techniques
+
+### Extract Method
+Extract method is used when we extract a part of code from a function and basically splitting it into two different functions
+This method was used in the main parser class(I could preview but I dont really want to post a massive 100-line chunk of code here) to split the main function into 3+ small functions
+
+### Inline Method
+Inline method is used everywhere in almost every single function in two ways:
+1. **inline** C++ keyword to perform an optimization on the assembly level to create an inline representation of code in asmx86 when compiling the code, making it much more faster when running
+
+2.
+```cpp
+int arg = std::stoi(input.substr(space + 1));
+if(!(arg >= 0 && arg < file_names.size()))
+    continue;
+```
+Initially when fast-writing the code this was like 5-7 lines of code, while I could leave these kind of things in my code and I would've had 300+ lines of code in each and every file, but this method of refactoring really shrinks down the code
+
+### Extract Variable 
+When you have an expression that's hard to understand(and if we're using C++ it's happening ALL of the time) we gotta use this method to extract the variables/repeating-lines outside and make the code much more understandable
+```cpp
+std::size_t split = e.find(':');
+if(split == std::string::npos)
+    continue;
+
+std::string __key, __value;
+__key = e.substr(0, split);
+__value = e.substr(split + 1);
+
+variables[key][__key] = __value;
+```
+Same thing used here, instead of shrinking it down to 2 lines of code(this is totally fine but won't be as readable) we left out a lot of variables and we can easily see when they are used and why + we don't repeat the same block of code and we don't make the same call to `find()` function which could take a lot of time too!
